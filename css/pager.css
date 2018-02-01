@@ -1,0 +1,39 @@
+.gz-page-box {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gz-page-box .paging {
+  overflow: hidden;
+  text-align: center;
+}
+
+.gz-paging .button,
+.gz-paging p {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: block;
+  float: left;
+  min-width: 38px;
+  padding: 8px 10px;
+  border: 0;
+  color: #444;
+  font-size: 14px;
+  font-weight: 200;
+  border: 1px solid #DDD;
+  cursor: pointer;
+  margin-right: -1px;
+}
+
+.gz-paging .gz-pagenum {
+  display: block;
+}
+
+.gz-paging p.active {
+  background: #0000bb;
+  border-color: #0000bb;
+  color: white;
+}

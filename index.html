@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/pager.css">
+    <style>
+        thead td{
+            font-weight: bold;
+        }
+        td{
+            outline: 1px solid black;
+            padding: 10px 15px;
+            font-weight: 200;
+            text-align: center;
+        }
+        select{
+            min-width: 200px;
+            line-height: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <select id="sel">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <button onclick="reload()">刷新</button>
+    <table>
+        <thead>
+            <td>项目1</td>
+            <td>项目2</td>
+            <td>项目3</td>
+        </thead>
+        <tbody id="tb">
+            <!-- #code -->
+        </tbody>
+    </table>
+    <div class="gz-page_box">
+        <div class="gz-paging">
+            <p class="button prev">上一页</p>
+            <div class="gz-pagenum"></div>
+            <p class="button next">下一页</p>
+            <p class="gz-total">
+                总页数:
+                <span>0</span>
+            </p>
+        </div>
+    </div>
+</body>
+<script src="./js/jquery-1.9.1.min.js"></script>
+<script src="./js/template-web.js"></script>
+<script src="./js/moment-with-locales.js"></script>
+<script src="./js/gz-paging.js"></script>
+<script type="text/template" id="tp">
+    {{each list v i}}
+        <tr>
+            <td>{{v.title}}</td>
+            <td>{{v.upname}}</td>
+            <td>{{v.createtime | getTime}}</td>
+        </tr>
+    {{/each}}
+</script>
+<script>
+    var paging = setPage({
+        url: 'http://localhost/api/pageTest.php',
+        total: 'http://localhost/api/getTotal.php',
+        data: {
+            aid: 1
+        },
+        el: '#tb',
+        // num: 1,
+        tp: 'tp',
+        pager: '.gz-paging'
+    })
+
+    $('select').on('change',function(){
+        paging.changeId({
+           aid:$(this).val()
+        })
+    })
+
+    function reload(){
+        paging.reload()
+    }
+</script>
+</html>

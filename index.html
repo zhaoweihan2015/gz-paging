@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +8,25 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/pager.css">
     <style>
-        thead td{
+        thead td {
             font-weight: bold;
         }
-        td{
+
+        td {
             outline: 1px solid black;
             padding: 10px 15px;
             font-weight: 200;
             text-align: center;
         }
-        select{
+
+        select {
             min-width: 200px;
             line-height: 30px;
             height: 30px;
         }
     </style>
 </head>
+
 <body>
     <select id="sel">
         <option value="1">1</option>
@@ -42,15 +46,7 @@
         </tbody>
     </table>
     <div class="gz-page_box">
-        <div class="gz-paging">
-            <p class="button prev">上一页</p>
-            <div class="gz-pagenum"></div>
-            <p class="button next">下一页</p>
-            <p class="gz-total">
-                总页数:
-                <span>0</span>
-            </p>
-        </div>
+
     </div>
 </body>
 <script src="./js/jquery-1.9.1.min.js"></script>
@@ -59,34 +55,35 @@
 <script src="./js/gz-paging.js"></script>
 <script type="text/template" id="tp">
     {{each list v i}}
-        <tr>
-            <td>{{v.title}}</td>
-            <td>{{v.upname}}</td>
-            <td>{{v.createtime | getTime}}</td>
-        </tr>
+    <tr>
+        <td>{{v.title}}</td>
+        <td>{{v.upname}}</td>
+        <td>{{v.createtime | getTime}}</td>
+    </tr>
     {{/each}}
 </script>
 <script>
     var paging = setPage({
         url: 'http://localhost/api/pageTest.php',
-        total: 'http://localhost/api/getTotal.php',
         data: {
-            aid: 1
+            catid: 1
         },
         el: '#tb',
-        // num: 1,
+        num: 8,
         tp: 'tp',
-        pager: '.gz-paging'
+        pager: '.gz-page_box',
+        // useWebPaging:true
     })
 
-    $('select').on('change',function(){
+    $('select').on('change', function () {
         paging.changeId({
-           aid:$(this).val()
+            catid: $(this).val()
         })
     })
 
-    function reload(){
+    function reload() {
         paging.reload()
     }
 </script>
+
 </html>

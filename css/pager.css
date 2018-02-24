@@ -17,8 +17,9 @@
   user-select: none;
   display: block;
   float: left;
-  min-width: 38px;
+  min-width: 18px;
   padding: 8px 10px;
+  text-align:center;
   border: 0;
   color: #444;
   font-size: 14px;

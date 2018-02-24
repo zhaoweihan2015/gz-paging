@@ -232,9 +232,14 @@ function setPage(o) {
             }
             getData(o)
         },
-        // 获取总页数
-        getTotal: function () {
-            return _maxpage
+        // 获取当前信息
+        getInfo: function () {
+            return {
+                total: _totalnum, // 数据条目总数
+                maxpage: _maxpage,  // 页面总数
+                data: _data, // 当前页数据(如果为非服务器分页则为全部数据)
+                page: _page // 当前页码
+            }
         }
     }
 }

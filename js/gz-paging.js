@@ -42,7 +42,7 @@ function setPage(o) {
     function first() {
         // 设置分页节点
         setDom()
-        
+
         // 找到所在节点
         _pageElement = $(".gz-page_box").find('.gz-paging')
         if (o.hasOwnProperty('pager')) {
@@ -54,14 +54,14 @@ function setPage(o) {
     }
 
     // 分页DOM创建
-    function setDom() { 
+    function setDom() {
         var _box = $('<div class="gz-paging"></div>'),
             _button = $('<p class="button"></p>'),
             _pagenum = $('<div class="gz-pagenum"></div>')
-            _prev = _button.clone().addClass('prev').text('上一页'),
+        _prev = _button.clone().addClass('prev').text('上一页'),
             _next = _button.clone().addClass('next').text('下一页'),
-            _total = $('<p class="gz-total">总页数:<span></span>页</p>')    
-        _box.append(_prev, _pagenum, _next,_total)
+            _total = $('<p class="gz-total">总页数:<span></span>页</p>')
+        _box.append(_prev, _pagenum, _next, _total)
         $('.gz-page_box').append(_box)
     }
 
@@ -84,9 +84,9 @@ function setPage(o) {
     // 获取数据
     function getData() {
         var option = {
-            url: _dataUrl,
-            type: 'post'
-        },
+                url: _dataUrl,
+                type: 'post'
+            },
             data = {}
         for (var key in o.data) {
             if (o.data.hasOwnProperty(key)) {
@@ -109,9 +109,9 @@ function setPage(o) {
             }
             option.data.row = _shownum
             option.data.page = _page
-        
+
             setAjax(option)
-        } else if(o.webPaging) {
+        } else if (o.webPaging) {
             // 使用前端分页
             if (!_data) {
                 option.success = function (d) {
@@ -167,7 +167,7 @@ function setPage(o) {
                         return false
                     }
                 }
-                setPager() 
+                setPager()
                 getData()
             } else {
                 return false
@@ -197,7 +197,7 @@ function setPage(o) {
                 i = _maxpage - _pageTotal + 1
                 end = _maxpage + 1
             }
-            for (i ; i < end; i++) {
+            for (i; i < end; i++) {
                 el.append("<p data-page='" + i + "'>" + i + "</p>")
             }
         }
@@ -206,8 +206,44 @@ function setPage(o) {
     }
 
     // 摧毁现有分页节点
-    function destroyPaging() { 
+    function destroyPaging() {
         $(".gz-paging").remove()
+    }
+
+    /**
+     * 封装ajax请求
+     * 
+     * @param {object} o 
+     * @param {string} o.url       地址
+     * @param {string} o.type      上传方式类型
+     * @param {object} o.data      上传的数据
+     * @param {boolean} o.upfile   是否上传图片
+     * @param {function} o.success 成功后的回调函数
+     */
+    function setAjax(o) {
+        var t = 'get'
+        if (o.type) {
+            t = o.type
+        }
+
+        var option = {
+            url: o.url,
+            data: o.data,
+            type: t,
+            dataType: 'json',
+            success: function (d) {
+                o.success(d)
+            },
+            error: function () {
+                console.warn('HEY GUYS,AJAX ERROR :(    URL IS ' + o.url)
+            }
+        }
+        if (o.hasOwnProperty('upfile')) {
+            option.contentType = false
+            option.processData = false
+            option.type = 'post'
+        }
+        $.ajax(option)
     }
 
     return {
@@ -228,7 +264,7 @@ function setPage(o) {
                     }
                 }
             }
-            
+
             setPage(o)
         },
         // 当前页数表格刷新
@@ -243,7 +279,7 @@ function setPage(o) {
         getInfo: function () {
             return {
                 total: _totalnum, // 数据条目总数
-                maxpage: _maxpage,  // 页面总数
+                maxpage: _maxpage, // 页面总数
                 data: _data, // 当前页数据(如果为非服务器分页则为全部数据)
                 page: _page // 当前页码
             }
@@ -255,43 +291,6 @@ if (window.hasOwnProperty("template")) {
     template.defaults.imports.getTime = function (d) {
         return moment(d).format('L')
     }
-}
-
-
-/**
- * 封装ajax请求
- * 
- * @param {object} o 
- * @param {string} o.url       地址
- * @param {string} o.type      上传方式类型
- * @param {object} o.data      上传的数据
- * @param {boolean} o.upfile   是否上传图片
- * @param {function} o.success 成功后的回调函数
- */
-function setAjax(o) {
-    var t = 'get'
-    if (o.type) {
-        t = o.type
-    }
-
-    var option = {
-        url: o.url,
-        data: o.data,
-        type: t,
-        dataType: 'json',
-        success: function (d) {
-            o.success(d)
-        },
-        error: function () {
-            console.warn('HEY GUYS,AJAX ERROR :(    URL IS ' + o.url)
-        }
-    }
-    if (o.hasOwnProperty('upfile')) {
-        option.contentType = false
-        option.processData = false
-        option.type = 'post'
-    }
-    $.ajax(option)
 }
 
 

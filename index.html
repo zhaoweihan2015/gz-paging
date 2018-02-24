@@ -72,7 +72,13 @@
         num: 8,
         tp: 'tp',
         pager: '.gz-page_box',
-        // useWebPaging:true
+        dataChange:function(data){
+            data.forEach(e => {
+                e.upname += " By Gz"
+            });
+            return data
+        },
+        webPaging:true
     })
 
     $('select').on('change', function () {

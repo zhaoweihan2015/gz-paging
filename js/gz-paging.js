@@ -1,15 +1,16 @@
 /**
  * 分页
  * 
- * @param {number}  num       在一页中显示的数量（默认为10） 
- * @param {object}  data      在发送请求的时候同时传入的数据
- * @param {string}  url       获取列表信息的地址
- * @param {string}  key       返回数据中信息列表的键名
- * @param {string}  pagNumber 分页显示个数上限
- * @param {boolean} webpaging 是否采用服务器分页，否则使用前端分页(使用后key无效)
- * @function reload           当前页数的列表重新获取,参数为所需跳转的页数,不填写为刷新当前页
- * @function changeId         表格内数据重新更换,参数为新表格变更的新设置
- * @function getTotal         返回总页数
+ * @param {number}   num        在一页中显示的数量（默认为10） 
+ * @param {object}   data       在发送请求的时候同时传入的数据
+ * @param {string}   url        获取列表信息的地址
+ * @param {string}   key        返回数据中信息列表的键名
+ * @param {string}   pageNumber  分页显示个数上限
+ * @param {boolean}  webPaging  是否采用服务器分页，否则使用前端分页(使用后key无效)
+ * @param {function} dataChange 对打印数据进行二次处理
+ * @function reload             当前页数的列表重新获取,参数为所需跳转的页数,不填写为刷新当前页
+ * @function changeId           表格内数据重新更换,参数为新表格变更的新设置
+ * @function getTotal           返回总页数
  */
 
 function setPage(o) {
@@ -32,8 +33,8 @@ function setPage(o) {
         _key = key
     }
 
-    if (o.hasOwnProperty('pagNumber')) {
-        _pageTotal = o.pagNumber
+    if (o.hasOwnProperty('pageNumber')) {
+        _pageTotal = o.pageNumber
     }
 
     first()
@@ -66,8 +67,15 @@ function setPage(o) {
 
     // 打印数据 
     function printTemplate(r) {
+
+        //对每次打印的数据进行二次处理
+        var list = r
+        if (o.hasOwnProperty('dataChange')) {
+            list = o.dataChange(r)
+        }
+
         var res = template(o.tp, {
-            'list': r,
+            'list': list,
             'start': (_page - 1) * _shownum
         })
         $(o.el).html(res)
@@ -86,7 +94,7 @@ function setPage(o) {
             }
         }
         option.data = data
-        if (o.webpaging === null || o.webpaging === undefined) {
+        if (o.webPaging === null || o.webPaging === undefined) {
             // 使用服务器分页
             option.success = function (d) {
                 _totalnum = d.total
@@ -103,7 +111,7 @@ function setPage(o) {
             option.data.page = _page
         
             setAjax(option)
-        } else if(o.webpaging) {
+        } else if(o.webPaging) {
             // 使用前端分页
             if (!_data) {
                 option.success = function (d) {

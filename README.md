@@ -9,7 +9,8 @@
 #### `data`  请求时发送的数据信息
 #### `key`   分页显示个数上限
 #### `el`    列表class/id
-#### `pagNumber`   一页显示多少条信息（默认为10条）
+#### `num`   一页显示多少条信息（默认为10条）
+#### `pagNumber `  分页显示个数上限
 #### `webpaging`   是否采用服务器分页，否则使用前端分页(使用后key无效)
 #### `pager` 分页节点的class/id
 #### `tp`    所使用的模版名
@@ -39,7 +40,15 @@
 ```javascript
   paging.reload()
 ```
-### `getTotal` 获取页面总数
+#### `getInfo` 获取分页相关信息
+#### `paging.getInfo().data` 当前页数据(如果为非服务器分页则为全部数据)
+#### `paging.getInfo().maxpage` 页面总数
+#### `paging.getInfo().total` 数据条目总数
+#### `paging.getInfo().page` 当前页码
 ```javascript
-  paging.getTotal()
+  var _info = paging.getInfo()
+  _info.data 
+  _info.total
+  _info.maxpage 
+  _info.page
 ```

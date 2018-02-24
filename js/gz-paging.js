@@ -37,9 +37,9 @@ function setPage(o) {
         _pageTotal = o.pageNumber
     }
 
-    first()
+    init()
     // 初始化显示
-    function first() {
+    function init() {
         // 设置分页节点
         setDom()
 

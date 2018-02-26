@@ -67,9 +67,20 @@ function setPage(o) {
 
     // 打印数据 
     function printTemplate(r) {
+        var list = r
+
+        if (o.hasOwnProperty('maxlength')) {
+            list.forEach(function (e) { 
+                var info = e
+                o.maxlength.key.forEach(function (e) { 
+                    if (info[e].length > o.maxlength.max) {
+                        info[e] = info[e].slice(0, o.maxlength.max - 1) + "..."
+                    }
+                })
+            })   
+        }
 
         //对每次打印的数据进行二次处理
-        var list = r
         if (o.hasOwnProperty('dataChange')) {
             list = o.dataChange(r)
         }

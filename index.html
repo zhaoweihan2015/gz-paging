@@ -75,8 +75,12 @@
         dataChange:function(data){
             data.forEach(e => {
                 e.upname += " By Gz"
-            });
+            })
             return data
+        },
+        maxlength:{
+            key:['title','upname'],
+            max:8
         },
         webPaging:true
     })
@@ -90,6 +94,7 @@
     function reload() {
         paging.reload()
     }
+
 </script>
 
 </html>

@@ -234,7 +234,7 @@ function setPage(o) {
             success: function (d) {
                 o.success(d)
             },
-            error: function () {
+            error: function () {8
                 console.warn('HEY GUYS,AJAX ERROR :(    URL IS ' + o.url)
             }
         }
@@ -260,7 +260,7 @@ function setPage(o) {
                     if (key == "url") {
                         o.url = oinfo.url
                     } else {
-                        o.data[key] = oinfo[key];
+                        o.data[key] = oinfo[key]
                     }
                 }
             }

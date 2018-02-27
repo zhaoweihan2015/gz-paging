@@ -14,7 +14,7 @@
 #### `pageNumber `  分页显示个数上限
 #### `webPaging`   是否采用服务器分页，否则使用前端分页（使用后key无效）
 #### `pager` 分页节点的class/id
-#### `maxlength` 文字显示上限
+#### `maxlength` 文字显示上限 
 `key` 字段名 `max` 上限 
 #### `tp`    所使用的模版名
 #### `dataChange` 对打印数据进行二次处理（必须返回修改后的值）

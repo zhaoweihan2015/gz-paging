@@ -51,8 +51,11 @@
   })
 ```
 #### `reload` 重新请求当前页数的数据
+#### 参数一为改为第几页刷新
+#### 参数二为是否为完全刷新（true会重新生成分页与信息，false为只刷新当前页信息，默认为false）
 ```javascript
   paging.reload()
+  paging.reload(2,true)
 ```
 #### `getInfo` 获取分页相关信息
 #### `paging.getInfo().data` 当前页数据(如果为非服务器分页则为全部数据)

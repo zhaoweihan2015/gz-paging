@@ -34,7 +34,7 @@
             max:8
         },
         dataChange: function (data){
-            data.forEach(e=>{
+            data.forEach(e => {
                   e.upname += " By Gz"
             })
             return data

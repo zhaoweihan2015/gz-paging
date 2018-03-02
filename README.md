@@ -29,7 +29,7 @@
         webPaging:true,
         tp: 'tp',
         pager: '.gz-paging',
-        maxlength:{ 
+        maxlength:{
             key:['content','title'],
             max:8
         },

@@ -5,12 +5,13 @@
  * @param {object}   data       在发送请求的时候同时传入的数据
  * @param {string}   url        获取列表信息的地址
  * @param {string}   key        返回数据中信息列表的键名
- * @param {string}   pageNumber  分页显示个数上限
+ * @param {string}   pageNumber 分页显示个数上限
+ * @param {object}   webLength  一行显示文字上限
  * @param {boolean}  webPaging  是否采用服务器分页，否则使用前端分页(使用后key无效)
  * @param {function} dataChange 对打印数据进行二次处理
  * @function reload             当前页数的列表重新获取,参数为所需跳转的页数,不填写为刷新当前页
  * @function changeId           表格内数据重新更换,参数为新表格变更的新设置
- * @function getTotal           返回总页数
+ * @function getInfo            返回当前信息
  */
 
 function setPage(o) {
@@ -23,7 +24,8 @@ function setPage(o) {
         _dataUrl = o.url,
         _key = "rows",
         _pageTotal = 5,
-        _hasAddEvent = false
+        _hasAddEvent = false,
+        _setButton = [] // 按钮设置
 
     if (o.hasOwnProperty("num")) {
         _shownum = o.num
@@ -35,6 +37,14 @@ function setPage(o) {
 
     if (o.hasOwnProperty('pageNumber')) {
         _pageTotal = o.pageNumber
+    }
+
+    if (o.hasOwnProperty('setButton')) {
+        for (var k in o.setButton) { 
+            if (o.setButton[k]) {
+                _setButton.push[k]
+            }
+        }
     }
 
     init()
@@ -57,11 +67,14 @@ function setPage(o) {
     function setDom() {
         var _box = $('<div class="gz-paging"></div>'),
             _button = $('<p class="button"></p>'),
-            _pagenum = $('<div class="gz-pagenum"></div>')
-        _prev = _button.clone().addClass('prev').text('上一页'),
+            _pagenum = $('<div class="gz-pagenum"></div>'),
+            _prev = _button.clone().addClass('prev').text('上一页'),
             _next = _button.clone().addClass('next').text('下一页'),
-            _total = $('<p class="gz-total">总页数:<span></span>页</p>')
-        _box.append(_prev, _pagenum, _next, _total)
+            _toFirst = _button.clone().addClass('first').text('首页'),
+            _toLast = _button.clone().addClass('last').text('尾页'),
+            _total = $('<p class="gz-total">总页数:<span></span>页</p>'),
+            _btnList = [_prev, _pagenum, _next, _total]
+        _box.append(_btnList)
         $('.gz-page_box').append(_box)
     }
 
@@ -69,12 +82,12 @@ function setPage(o) {
     function printTemplate(r) {
         var list = r
 
-        if (o.hasOwnProperty('maxlength')) {
+        if (o.hasOwnProperty('maxLength')) {
             list.forEach(function (e) { 
                 var info = e
-                o.maxlength.key.forEach(function (e) { 
-                    if (info[e].length > o.maxlength.max) {
-                        info[e] = info[e].slice(0, o.maxlength.max - 1) + "..."
+                o.maxLength.key.forEach(function (e) { 
+                    if (info[e].length > o.maxLength.max) {
+                        info[e] = info[e].slice(0, o.maxLength.max - 1) + "..."
                     }
                 })
             })   
@@ -149,6 +162,7 @@ function setPage(o) {
             return false
         }
         _page = (_page + 1) > _maxpage ? _maxpage : _page + 1
+        return _page
     }
 
     // 上一页
@@ -157,6 +171,7 @@ function setPage(o) {
             return false
         }
         _page = (_page - 1) < 1 ? 1 : _page - 1
+        return _page
     }
 
     // 事件添加
@@ -165,12 +180,13 @@ function setPage(o) {
         _pageElement.click(function (e) {
             var e = e || window.event,
                 el = e.target,
-                $el = $(e.target)
+                $el = $(e.target),
+                _canChange = true
             if ($el.hasClass('button') || 　el.tagName == "P") {
                 if ($el.hasClass('next')) {
-                    next()
+                    _canChange = next()
                 } else if ($el.hasClass('prev')) {
-                    prev()
+                    _canChange = prev()
                 } else if (el.tagName == "P") {
                     if (Number($el.attr('data-page')) != _page) {
                         _page = Number($el.attr('data-page'))
@@ -178,8 +194,11 @@ function setPage(o) {
                         return false
                     }
                 }
-                setPager()
-                getData()
+                // 数据变化
+                if (_canChange) {
+                    setPager()
+                    getData()
+                }
             } else {
                 return false
             }
@@ -212,8 +231,11 @@ function setPage(o) {
                 el.append("<p data-page='" + i + "'>" + i + "</p>")
             }
         }
-
-        el.find('p').removeAttr('class').siblings('p[data-page=' + _page + ']').addClass('active')
+        if (_page != 1) {
+            el.find('p').removeAttr('class').siblings('p[data-page=' + _page + ']').addClass('active')
+        } else {
+            el.find('p').eq(0).addClass('active')
+        }
     }
 
     // 摧毁现有分页节点
@@ -284,7 +306,7 @@ function setPage(o) {
             if (number != null) {
                 _page = number
             }
-            getData(o)
+            getData()
         },
         // 获取当前信息
         getInfo: function () {
